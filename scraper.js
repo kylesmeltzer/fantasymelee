@@ -23,20 +23,25 @@ request('https://smash.gg/tournament/get-on-my-level-2019-canadian-fighting-game
   if (!error && response.statusCode == 200){
     var $ = cheerio.load(html);
     $('tr.tappable-component').each(function(i, element){
-      var team = $(this).find('.sggpQ_Ea').text();
-      var tag = $(this).find('.sgg20NMf').text();
-      var name = $(this).find('.sgg3t9su').text();
-      var placement = $(this).find('h3').text();
+      var team = $(this).find('.sggpQ_Ea');
+      var tag = $(this).find('.sgg20NMf');
+      var name = $(this).find('.sgg3t9su');
+      var placement = $(this).find('h3');
+      var losses = $(this).find('.PlayerAvatarCell').next().next().children('.sggV1gDI');
       // Our parsed meta data object
       var metadata = {
-        sponsor: team,
-        tag: tag,
-        name: name,
-        placement: placement,
+        sponsor: team.text(),
+        tag: tag.text(),
+        name: name.text(),
+        placement: placement.text(),
+        // Will display the players bracket status: 0 = winners bracket, 1 = losers bracket, 2 = eliminated
+        status: losses.text(),
       };
       console.log(metadata);
     })
   }
 });
 
+
+// .PlayerAvatarCell, down two attributes > div.text
 
