@@ -32,16 +32,24 @@ request('https://smash.gg/tournament/get-on-my-level-2019-canadian-fighting-game
       var metadata = {
         sponsor: team.text(),
         tag: tag.text(),
-        name: name.text(),
+        playerName: name.text(),
         placement: placement.text(),
         // Will display the players bracket status: 0 = winners bracket, 1 = losers bracket, 2 = eliminated
         status: losses.text(),
       };
-      console.log(metadata);
+
+      // Input scraped data to MongoDB
+      var StandingsModel = require('./structure');
+      let msg = new StandingsModel(metadata)
+      msg.save()
+        .then(doc => {
+          console.log(doc)
+        })
+        .catch(err => {
+          console.error(err)
+        })
+
     })
   }
 });
-
-
-// .PlayerAvatarCell, down two attributes > div.text
 
